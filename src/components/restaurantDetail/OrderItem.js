@@ -6,6 +6,7 @@ export default function OrderItem({ item }) {
     return (
         <View
             style={{
+                flex: 1,
                 flexDirection: "row",
                 justifyContent: "space-between",
                 padding: 20,

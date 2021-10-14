@@ -1,7 +1,9 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, ImageBackground, TouchableOpacity } from "react-native";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 export default function About(props) {
+    const { navigation } = props
     const { name, image, price, reviews, rating, categories } =
         props.route.params;
 
@@ -12,7 +14,7 @@ export default function About(props) {
         } • 🎫 • ${rating} ⭐ (${reviews}+)`;
     return (
         <View>
-            <RestaurantImage image={image} />
+            <RestaurantImage navigation={navigation} image={image} />
             <RestaurantName name={name} />
             <RestaurantDescription description={description} />
         </View>
@@ -20,7 +22,33 @@ export default function About(props) {
 }
 
 const RestaurantImage = (props) => (
-    <Image source={{ uri: props.image }} style={{ width: "100%", height: 180 }} />
+    <ImageBackground
+        source={{ uri: props.image }}
+        style={{ width: "100%", height: 180 }}
+    >
+        <TouchableOpacity
+            onPress={() => {
+                props.navigation.navigate("Home")
+            }}
+        >
+            <View>
+                <FontAwesome5
+                    name={"arrow-left"}
+                    size={25}
+                    style={{
+                        color: "white",
+                        marginBottom: 3,
+                        marginTop: 10,
+                        marginLeft: 10,
+                        alignSelf: "flex-start",
+                    }}
+                />
+
+            </View>
+        </TouchableOpacity>
+
+    </ImageBackground>
+
 );
 
 const RestaurantName = (props) => (

@@ -44,7 +44,10 @@ export default function MenuItems({
         Boolean(cartItems.find((item) => item.title === food.title));
 
     return (
-        <ScrollView showsVerticalScrollIndicator={false}>
+
+        <ScrollView
+
+            showsVerticalScrollIndicator={false}>
             {foods.map((food, index) => (
                 <View key={index}>
                     <View style={styles.menuItemStyle}>
@@ -69,6 +72,7 @@ export default function MenuItems({
                 </View>
             ))}
         </ScrollView>
+
     );
 }
 

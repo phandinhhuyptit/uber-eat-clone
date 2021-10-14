@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView, ScrollView } from "react-native";
+import { View, Text, SafeAreaView, ScrollView, TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 import LottieView from "lottie-react-native";
 import firebase from "../firebase/firebase";
 import MenuItems from "../components/restaurantDetail/MenuItems";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
-export default function OrderCompleted() {
+export default function OrderCompleted(props) {
+    const { navigation } = props
     const [lastOrder, setLastOrder] = useState({
         items: [
             {
@@ -48,6 +50,26 @@ export default function OrderCompleted() {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.navigate("Home")
+                }}
+            >
+                <View>
+                    <FontAwesome5
+                        name={"arrow-left"}
+                        size={25}
+                        style={{
+
+                            marginBottom: 3,
+                            marginTop: 10,
+                            marginLeft: 10,
+                            alignSelf: "flex-start",
+                        }}
+                    />
+
+                </View>
+            </TouchableOpacity>
             {/* green checkmark */}
             <View
                 style={{

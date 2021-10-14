@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Modal, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, Modal, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { useSelector } from "react-redux";
 import OrderItem from "./OrderItem";
 import firebase from "../../firebase/firebase";
@@ -24,6 +24,7 @@ export default function ViewCart({ navigation }) {
 
     const addOrderToFireBase = () => {
         setLoading(true);
+
         const db = firebase.firestore();
         db.collection("orders")
             .add({
@@ -77,71 +78,82 @@ export default function ViewCart({ navigation }) {
     const checkoutModalContent = () => {
         return (
             <>
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalCheckoutContainer}>
-                        <Text style={styles.restaurantName}>{restaurantName}</Text>
-                        {items.map((item, index) => (
-                            <OrderItem key={index} item={item} />
-                        ))}
-                        <View style={styles.subtotalContainer}>
-                            <Text style={styles.subtotalText}>Subtotal</Text>
-                            <Text>{totalUSD}</Text>
-                        </View>
-                        <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                            <TouchableOpacity
-                                style={{
-                                    marginTop: 20,
-                                    backgroundColor: "black",
-                                    alignItems: "center",
-                                    padding: 13,
-                                    borderRadius: 30,
-                                    width: 300,
-                                    position: "relative",
-                                }}
-                                onPress={() => {
-                                    addOrderToFireBase();
-                                    setModalVisible(false);
-                                }}
-                            >
-                                <Text style={{ color: "white", fontSize: 20 }}>Checkout</Text>
-                                <Text
+                <TouchableWithoutFeedback onPress={() => {
+                    setModalVisible(false)
+                }}  >
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalCheckoutContainer}>
+                            <Text style={styles.restaurantName}>{restaurantName}</Text>
+                            {items.map((item, index) => (
+                                <OrderItem key={index} item={item} />
+                            ))}
+                            <View style={styles.subtotalContainer}>
+                                <Text style={styles.subtotalText}>Subtotal</Text>
+                                <Text>{totalUSD}</Text>
+                            </View>
+                            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                                <TouchableOpacity
                                     style={{
-                                        position: "absolute",
-                                        right: 20,
-                                        color: "white",
-                                        fontSize: 15,
-                                        top: 17,
+                                        marginTop: 20,
+                                        backgroundColor: "black",
+                                        alignItems: "center",
+                                        padding: 13,
+                                        borderRadius: 30,
+                                        width: 300,
+                                        position: "relative",
+                                    }}
+                                    onPress={() => {
+                                        setModalVisible(false);
+                                        addOrderToFireBase();
+
                                     }}
                                 >
-                                    {total ? totalUSD : ""}
-                                </Text>
-                            </TouchableOpacity>
+                                    <Text style={{ color: "white", fontSize: 20 }}>Checkout</Text>
+                                    <Text
+                                        style={{
+                                            position: "absolute",
+                                            right: 20,
+                                            color: "white",
+                                            fontSize: 15,
+                                            top: 10,
+                                        }}
+                                    >
+                                        {total ? totalUSD : ""}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
-                </View>
+                </TouchableWithoutFeedback>
             </>
+
         );
     };
 
     return (
         <>
+
             <Modal
                 animationType="slide"
+
                 visible={modalVisible}
                 transparent={true}
-                onRequestClose={() => setModalVisible(false)}
+                onRequestClose={() =>
+                    setModalVisible(false)
+                }
             >
                 {checkoutModalContent()}
             </Modal>
+
             {total ? (
                 <View
                     style={{
-                        flex: 1,
-                        alignItems: "center",
-                        justifyContent: "center",
+                        // flex: 1,
+                        // alignItems: "",
+                        // justifyContent: "flex-start",
                         flexDirection: "row",
                         position: "absolute",
-                        bottom: 130,
+                        top: "100%",
                         zIndex: 999,
                     }}
                 >
@@ -167,7 +179,7 @@ export default function ViewCart({ navigation }) {
                         >
                             <Text style={{ color: "white", fontSize: 20, marginRight: 30 }}>
                                 View Cart
-              </Text>
+                            </Text>
                             <Text style={{ color: "white", fontSize: 20 }}>{totalUSD}</Text>
                         </TouchableOpacity>
                     </View>
@@ -197,6 +209,7 @@ export default function ViewCart({ navigation }) {
             ) : (
                     <></>
                 )}
+
         </>
     );
 }
