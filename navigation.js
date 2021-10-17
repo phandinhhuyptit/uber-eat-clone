@@ -1,32 +1,42 @@
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
-import Home from "./src/screens/Home";
-import OrderCompleted from "./src/screens/OrderCompleted";
-import RestaurantDetail from "./src/screens/RestaurantDetail";
-import { Provider as ReduxProvider } from "react-redux";
-import configureStore from "./src/redux/store";
-
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import Home from './src/screens/Home';
+import Login from './src/screens/Login';
+import Register from './src/screens/Register';
+import OrderCompleted from './src/screens/OrderCompleted';
+import RestaurantDetail from './src/screens/RestaurantDetail';
+import { useSelector } from 'react-redux';
 
 export default function RootNavigation() {
-    const Stack = createStackNavigator();
+  const Stack = createStackNavigator();
 
-    const screenOptions = {
-        headerShown: false,
-    };
+  const screenOptions = {
+    headerShown: false,
+  };
 
-    const store = configureStore();
+  const currentUser = useSelector((state) => state.auth.user);
 
-    return (
-        <ReduxProvider store={store}>
-            <NavigationContainer>
-                <Stack.Navigator initialRouteName="Home" screenOptions={screenOptions}>
-                    <Stack.Screen name="Home" component={Home} />
-                    <Stack.Screen name="RestaurantDetail" component={RestaurantDetail} />
-                    <Stack.Screen name="OrderCompleted" component={OrderCompleted} />
-                </Stack.Navigator>
-            </NavigationContainer>
-        </ReduxProvider>
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login" screenOptions={screenOptions}>
+        {!currentUser ? (
+          <>
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={Register} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen
+              name="RestaurantDetail"
+              component={RestaurantDetail}
+            />
 
-    );
+            <Stack.Screen name="OrderCompleted" component={OrderCompleted} />
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
